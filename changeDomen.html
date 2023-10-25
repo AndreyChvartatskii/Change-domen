@@ -1,0 +1,229 @@
+<!--Попап смены языка/ Нужно вставить правильный id блока выпадающего попапа-->
+<div class="countryPopup"></div>
+<script>
+$("document").ready(function() {
+/*Запрос на получение апи пользователя*/
+    $.getJSON('https://api.db-ip.com/v2/free/self', function(data) {
+	//Основные блоки
+        var countryPopup = $('.countryPopup'); // Попап в HTML документе
+        var countryPopupBlock = $("#rec595540019");  // Зеро-блок вставляемого попапа
+        countryPopupBlock.hide();   // Скрываем его со страницы сразу    		
+        //Блок хедера для смены флага
+        var countryButton = document.querySelector(".countryFlag"); // Флаг в хедере
+        $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg)');// Меняет только картинку в хедере
+        var countryName = $('.countryName');//Название страны
+        var headerCountryName = $('.headerCountryName');
+		// Кнопки
+		var agreeButton = $('.tn-elem__5955400191684485358211 a'); // Кнопка да, это моя страна
+        var closeBtn = $(".tn-elem__5943415211684484856602 a");	// Кнопка закрытия попапа
+		// Флаг в попапе
+        var countryBlok = $('.tn-elem__5955400191684484325373');
+  		var countryMainFlag = $(countryBlok).find('.t-bgimg');
+		// Смена атрибута флага в попапе с data-original на src
+        $(countryMainFlag).each(function() {
+            $(this).attr("src",$(this).attr("data-original"));
+            $(this).removeAttr("data-original");
+        });   
+		// Если мы не находим записи в куки
+        if (document.cookie.search(/location_icolor_com=1/) == -1 && document.cookie.search(/location_icolor_com2=1/) == -1) {
+		    // Показываем попап
+            countryPopupBlock.show(); 
+            $(countryPopup).append(countryPopupBlock);
+			// При нажатии на кнопку закрытия создаем в куки запись которая живет час
+            $("[href='#closeBtn']").click(function() {
+                document.cookie = 'location_icolor_com2=1; path=/; domain=icolorpmu.com; max-age=3600';
+                $(countryPopupBlock).hide();
+            });
+			//Проверяем из какой страны заходит пользователь
+            /*Если пользователь заходит из CША*/
+            if(data.countryName == "United States") {
+                $(countryName).text('Are you located in USA?')
+                $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg)'); // Меняет картинку в попапе
+                $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+            } else {
+            /*Если пользователь заходит из России*/
+                if(data.countryName == "Russia") {
+                    $(countryName).text('Are you located in Russia?');
+                    $(countryMainFlag).css('background-image', 'url(https://static.tildacdn.com/tild6665-3830-4537-b938-393331313431/flag.svg)'); // Меняет картинку в попапе
+                    $(agreeButton).attr("href", "https://ru.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                } else {
+                /*Если пользователь заходит из Германии*/
+                    if(data.countryName == "Germany") {
+                        $(countryName).text('Are you located in Germany?')
+                        $(countryMainFlag).css('background-image', 'url(https://static.tildacdn.com/tild6337-3132-4263-b264-356636666635/Flag_of_Germany_Pant.svg)');// Меняет картинку в попапе
+                        $(agreeButton).attr("href", "https://de.icolorpmu.com/");// Меняет ссылку при нажатии согласия на переход
+                    } else {
+                    /*Если пользователь заходит из Великобритании*/
+                        if(data.countryName == "United Kingdom") {
+                            $(countryName).text('Are you located in UK?')
+                            $(countryMainFlag).css('background-image', 'url(https://static.tildacdn.com/tild3639-3066-4438-a535-393763333263/Flag_of_the_United_K.svg)');// Меняет картинку в попапе
+                            $(agreeButton).attr("href", "https://uk.icolorpmu.com/");// Меняет ссылку при нажатии согласия на переход
+                        } else {
+                        /*Если пользователь заходит из Латвии*/
+                            if(data.countryName == "Latvia") {
+                                $(headerCountryName).text('Latvia')
+                                $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Latvia.svg)');// Меняет только картинку в хедере
+                                $(countryPopupBlock).hide();
+                            } else {
+                            /*Если пользователь заходит из Франции*/
+                                if(data.countryName == "France") {
+                                    $(headerCountryName).text('France')
+                                    $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_France_%281794%E2%80%931815%2C_1830%E2%80%931974%2C_2020%E2%80%93present%29.svg)');// Меняет только картинку в хедере
+                                    $(countryPopupBlock).hide();
+                                } else {
+                                /*Если пользователь заходит из Италии*/
+                                    if(data.countryName == "Italy") {
+                                        $(headerCountryName).text('Italy')
+                                        $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/0/03/Flag_of_Italy.svg)');// Меняет только картинку в хедере
+                                        $(countryPopupBlock).hide();
+                                    } else {
+                                    /*Если пользователь заходит из Испании*/
+                                        if(data.countryName == "Spain") {
+                                            $(headerCountryName).text('Spain')
+                                            $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg)');// Меняет только картинку в хедере
+                                            $(countryPopupBlock).hide();
+                                        } else {
+                                        /*Если пользователь заходит из Польши*/
+                                            if(data.countryName == "Poland") {
+                                                $(headerCountryName).text('Poland')
+                                                $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Poland.svg)');// Меняет только картинку в хедере
+                                                $(countryPopupBlock).hide();
+                                            } else {
+                                            /*Если пользователь заходит из Литвы*/
+                                                if(data.countryName == "Litva") {
+                                                    $(headerCountryName).text('Litva')
+                                                    $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/1/11/Flag_of_Lithuania.svg)');// Меняет только картинку в хедере
+                                                    $(countryPopupBlock).hide();
+                                                } else {
+                                                /*Если пользователь заходит из Нидерланды*/
+                                                    if(data.countryName == "Netherlands") {
+                                                        $(headerCountryName).text('Netherlands')
+                                                        $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_the_Netherlands.svg)');// Меняет только картинку в хедере
+                                                        $(countryPopupBlock).hide();
+                                                    } else {
+                                                    /*Если пользователь заходит из Швеция*/
+                                                        if(data.countryName == "Sweden") {
+                                                            $(headerCountryName).text('Sweden') 
+                                                            $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg)');// Меняет только картинку в хедере
+                                                            $(countryPopupBlock).hide();
+                                                        } else {
+                                                        /*Если пользователь заходит из Швейцария*/
+                                                            if(data.countryName == "Switzerland") {
+                                                                $(headerCountryName).text('Switzerland')
+                                                                $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg)');// Меняет только картинку в хедере
+                                                                $(countryPopupBlock).hide();
+                                                            } else {
+                                                            /*Если пользователь заходит из Греция*/
+                                                                if(data.countryName == "Greece") {
+                                                                    $(headerCountryName).text('Greece')
+                                                                    $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Greece.svg)');// Меняет только картинку в хедере
+                                                                    $(countryPopupBlock).hide();
+                                                                } else {    
+                                                                /*Если пользователь заходит из Австрия*/
+                                                                    if(data.countryName == "Austria") {
+                                                                        $(headerCountryName).text('Austria')
+                                                                        $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_Austria.svg)');// Меняет только картинку в хедере
+                                                                        $(countryPopupBlock).hide();
+                                                                    } else {                                                           
+                                                                    /*Если пользователь заходит из Чехии*/
+                                                                        if(data.countryName == "Czech Republic") {
+                                                                            $(headerCountryName).text('Czech Republic')
+                                                                            $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg)');// Меняет только картинку в хедере
+                                                                            $(countryPopupBlock).hide();
+                                                                        } else {
+                                                                        /*Если пользователь заходит из Саудовской Аравии*/
+                                                                            if(data.countryName == "Saudi Arabia") {
+                                                                                $(countryName).text('Are you located in Saudi Arabia?')
+                                                                                $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg)');// Меняет только картинку в хедере
+                                                                                $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                                                                            } else {
+                                                                            /*Если пользователь заходит из Арабских Эмират*/
+                                                                                if(data.countryName == "United Arab Emirates") {
+                                                                                    $(countryName).text('Are you located in UAE?')
+                                                                                    $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_United_Arab_Emirates.svg)');// Меняет только картинку в хедере
+                                                                                    $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                                                                                } else {
+                                                                                    /*Если пользователь заходит из Катара*/
+                                                                                    if(data.countryName == "Qatar") {
+                                                                                        $(countryName).text('Are you located in Qatar?')
+                                                                                        $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Qatar_%281949%E2%80%931971%29.svg)');// Меняет только картинку в хедере
+                                                                                        $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                                                                                    } else {
+                                                                                    /*Если пользователь заходит из Израиль*/
+                                                                                        if(data.countryName == "Israel") {
+                                                                                            $(countryName).text('Are you located in Israel?')
+                                                                                            $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Israel.svg)'); // Меняет картинку в попапе
+                                                                                            $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                                                                                        } else {
+                                                                                        /*Если пользователь заходит из Канады*/
+                                                                                            if(data.countryName == "Canada") {
+                                                                                                $(countryName).text('Are you located in Canada?')
+                                                                                                $(countryMainFlag).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Canada_%28Pantone%29.svg)'); // Меняет только картинку в хедере
+                                                                                                $(agreeButton).attr("href", "https://int.icolorpmu.com/"); // Меняет ссылку при нажатии согласия на переход
+                                                                                            } else {
+                                                                                            /*Страны Европы*/
+                                                                                                if (data.countryName !== "Russia" && data.countryName !== "United Kingdom" && data.countryName !== "Germany") {
+                                                                                                /*Проверка континента и для стран Евросоюза*/
+                                                                                                    if(data.continentName == "Europe") {
+                                                                                                        $(countryButton).css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg)');// Меняет только картинку в хедере
+                                                                                                        $(countryPopupBlock).hide();
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+<style>
+
+.countryPopup {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.countryFlag {
+    background-image: url(https://static.tildacdn.com/tild3564-3761-4535-b238-633735323533/Frame_406.svg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 3px;           
+}
+
+.countryName {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.headerCountryName {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+.tn-elem__5955400191684484325373 {
+    border: 1px solid #eee;
+    border-radius: 3px;   
+}
+</style>
+ 
